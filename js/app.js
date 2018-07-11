@@ -37,10 +37,24 @@ function shuffle(array) {
  *    + if all cards have matched, display a message with the final score (put this functionality in another function that you call from this one)
  */
 
-let allCards = document.querySelectorAll('.card');
+let allCards = document.querySelectorAll('.card'); //selects all in the card class from html
+openCards = []; //open array to keep track of flipped cards
 
-allCards.forEach(function(card) {
+allCards.forEach(function(card) { //applies to all cards
     card.addEventListener('click', function(e) {
-        card.classList.add('open', 'show');
-    });
+
+    if (!card.classList.contains('open') && !card.classList.contains('show') && !card.classList.contains('match')) { //prevents flipped card from passing to array
+          openCards.push(card); //pushes clicked card element to array
+          card.classList.add('open', 'show'); //shows card
+
+      if (openCards.length == 2) { //limits flipped cards per turn to 2
+        setTimeout(function() {
+          openCards.forEach(function(card) { //times out shown cards
+            card.classList.remove('open', 'show');
+          });
+          openCards = []; //empties array upon timeout
+        }, 1000); //later on can try to prevent user from more clicks
+      }
+    }
+  });
 });
