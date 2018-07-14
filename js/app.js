@@ -13,7 +13,7 @@ let cards = ['fa-diamond', 'fa-diamond',
             //stores all the cards in an array
 
 function generateCard(card) { //gives HTML for each card
-    return `<li class="card" data-card="${card}"><i class="fa ${card}"></i></li>`;}
+    return `<li class="card" data-card="${card}"><i class="fa ${card}"></i></li>`;
 }
 
 
@@ -55,7 +55,7 @@ function shuffle(array) {
 
 
 function initGame() {
-  let deck = document.querySelector('.deck'); //calls deck ul
+  const deck = document.querySelector('.deck'); //calls deck ul
   let cardHTML = shuffle(cards).map(function(card) { //map calls all the cards and translates into the function
   return generateCard(card); //creates array of strings
 });
@@ -63,12 +63,40 @@ function initGame() {
 deck.innerHTML  = cardHTML.join(''); //turns the strings into HTML
 }
 
+function addMove() { //maintains count of moves
+  moves++;
+  const movesTest = document.querySelector('.moves');
+    if (moves === 1) {
+      movesTest.innerHTML = moves + " Move";
+    } else {
+      movesTest.innerHTML = moves + " Moves"
+    }
+}
+
+function stars() { //when to remove a star
+  if (moves === 16 || moves === 24) {
+    demote();
+  }
+}
+
+function demote() {
+  const starList = document.querySelectorAll('.stars li');
+  for (star of starList) {
+    if (star.style.display !== 'none') {
+      star.style.display = 'none';
+      break;
+    }
+  }
+}
+
 //sets game board
 initGame();
 
 
+
 let allCards = document.querySelectorAll('.card'); //selects all in the card class from html
 openCards = []; //open array to keep track of open cards
+let moves = 0;
 
 
 allCards.forEach(function(card) { //applies to all cards
@@ -79,25 +107,33 @@ allCards.forEach(function(card) { //applies to all cards
          card.classList.add('open', 'show'); //shows card
             // console.log('Open Cards:', openCards.length); //shows # open
 
+// let firstCardType = openCards[0].dataset.card;
 
 
+if (openCards.length === 2) { //limits flipped cards per turn to two
+  addMove();
+  stars();
+//CARDS MATCH
+if (openCards[0].dataset.card === openCards[1].dataset.card) {
 
-//IF CARDS MATCH
-let firstCard = openCards[0].querySelector('i').classList.item(1);
+    openCards[0].classList.add('match');
+    openCards[0].classList.add('open');
+    openCards[0].classList.add('show');
 
+    openCards[1].classList.add('match');
+    openCards[1].classList.add('open');
+    openCards[1].classList.add('show');
 
-
-
-
-
-//CARDS DO NOT MATCH
-if (openCards.length == 2) { //limits flipped cards per turn to two
+    openCards = [];
+} else {
+  //CARDS DON'T MATCH
     setTimeout(function() {
           openCards.forEach(function(card) { //times out shown cards
           card.classList.remove('open', 'show');
         });
             openCards = []; //empties array upon timeout
                 }, 1000); //later can try to prevent user from three clicks
+              }
              }
          }
      });
