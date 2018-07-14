@@ -2,6 +2,20 @@
  * Create a list that holds all of your cards
  */
 
+let cards = ['fa-diamond', 'fa-diamond',
+            'fa-paper-plane-o', 'fa-paper-plane-o',
+            'fa-anchor', 'fa-anchor',
+            'fa-bolt', 'fa-bolt',
+            'fa-cube', 'fa-cube',
+            'fa-leaf', 'fa-leaf',
+            'fa-bicycle', 'fa-bicycle',
+            'fa-bomb', 'fa-bomb'];
+            //stores all the cards in an array
+
+function generateCard(card) { //gives HTML for each card
+    return `<li class="card" data-card="${card}"><i class="fa ${card}"></i></li>`;}
+}
+
 
 /*
  * Display the cards on the page
@@ -37,24 +51,54 @@ function shuffle(array) {
  *    + if all cards have matched, display a message with the final score (put this functionality in another function that you call from this one)
  */
 
+
+
+
+function initGame() {
+  let deck = document.querySelector('.deck'); //calls deck ul
+  let cardHTML = shuffle(cards).map(function(card) { //map calls all the cards and translates into the function
+  return generateCard(card); //creates array of strings
+});
+
+deck.innerHTML  = cardHTML.join(''); //turns the strings into HTML
+}
+
+//sets game board
+initGame();
+
+
 let allCards = document.querySelectorAll('.card'); //selects all in the card class from html
-openCards = []; //open array to keep track of flipped cards
+openCards = []; //open array to keep track of open cards
+
 
 allCards.forEach(function(card) { //applies to all cards
-    card.addEventListener('click', function(e) {
+     card.addEventListener('click', function(e) {
 
-    if (!card.classList.contains('open') && !card.classList.contains('show') && !card.classList.contains('match')) { //prevents flipped card from passing to array
-          openCards.push(card); //pushes clicked card element to array
-          card.classList.add('open', 'show'); //shows card
+  if (!card.classList.contains('open') && !card.classList.contains('show') && !card.classList.contains('match')) {    //prevents flipped card from passing to array
+         openCards.push(card); //pushes clicked card element to array
+         card.classList.add('open', 'show'); //shows card
+            // console.log('Open Cards:', openCards.length); //shows # open
 
-      if (openCards.length == 2) { //limits flipped cards per turn to 2
-        setTimeout(function() {
+
+
+
+//IF CARDS MATCH
+let firstCard = openCards[0].querySelector('i').classList.item(1);
+
+
+
+
+
+
+//CARDS DO NOT MATCH
+if (openCards.length == 2) { //limits flipped cards per turn to two
+    setTimeout(function() {
           openCards.forEach(function(card) { //times out shown cards
-            card.classList.remove('open', 'show');
-          });
-          openCards = []; //empties array upon timeout
-        }, 1000); //later on can try to prevent user from more clicks
-      }
-    }
-  });
-});
+          card.classList.remove('open', 'show');
+        });
+            openCards = []; //empties array upon timeout
+                }, 1000); //later can try to prevent user from three clicks
+             }
+         }
+     });
+ });
