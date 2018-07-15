@@ -72,7 +72,7 @@ function addMove() { //maintains count of moves
     }
 }
 
-function stars() { //when to remove a star
+function starScore() { //when to remove a star
   if (moves === 16 || moves === 24) {
     demote();
   }
@@ -88,11 +88,22 @@ function demote() {
   }
 }
 
+function getStars() {
+  stars = document.querySelectorAll('.stars li');
+  starCount = 0;
+  for (star of stars) {
+      if (star.style.display !== 'none') {
+        starCount++;
+      }
+  }
+  return starCount;
+}
+
 function startClock() { //starts timer
-  let clockId = setInterval(() => {
+    clockId = setInterval(() => {
     time++; //increases the time by one second
-    console.log(time);
     displayTime();
+    console.log(time);
   }, 1000);
 }
 
@@ -112,17 +123,35 @@ function stopClock() {
   clearInterval(clockId);
 }
 
+function gameOver() {
+  stopClock();
+  displayModal();
+}
 
+function displayModal() {
+  let modal = document.querySelector('.modalBackground');
+  modal.classList.toggle('hide');
+}
 
+function writeModalStats() {
+  let timeStat = document.querySelector('.modalTime');
+  let clockTime = document.querySelector('.clock').innerHTML;
+  let starsStat = document.querySelector('.modalStars');
+  const stars = getStars();
+  let movesStat = document.querySelector('.modalMoves');
 
+  timeStat.innerHTML = `Time: ${clockTime}`;
+  starsStat.innerHTML = `Stars: ${stars}`;
+  movesStat.innerHTML = `Moves: ${moves}`;
+}
 
+document.querySelector('.modalCancel').addEventListener('click', () => {
+  displayModal();
+});
 
-
-
-
-
-
-
+document.querySelector('.modalReplay').addEventListener('click', () => {
+  console.log('replay');
+});
 
 
 //SETS GAME BOARD
@@ -133,6 +162,16 @@ openCards = []; //open array to keep track of open cards
 let moves = 0;
 let time = 0;
 let clockOff = true;
+let clockId;
+
+//modal testing
+time = 121;
+displayTime();
+moves = 16;
+starScore();
+writeModalStats();
+displayModal();
+
 
 displayTime();
 
@@ -151,10 +190,12 @@ allCards.forEach(function(card) { //applies to all cards
 
 if (openCards.length === 2) { //limits flipped cards per turn to two
   addMove();
-  stars();
+  starScore();
 
 //CARDS MATCH
 if (openCards[0].dataset.card === openCards[1].dataset.card) {
+
+let pairs = (cards / 2);
 
     openCards[0].classList.add('match');
     openCards[0].classList.add('open');
@@ -165,6 +206,10 @@ if (openCards[0].dataset.card === openCards[1].dataset.card) {
     openCards[1].classList.add('show');
 
     openCards = [];
+
+          if ([(card.classList.contains('match') / 2)] === pairs) {
+            gameOver();
+          }
 } else {
   //CARDS DON'T MATCH
     setTimeout(function() {
