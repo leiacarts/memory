@@ -1,3 +1,7 @@
+//Referenced Tutorials
+//Mike Wales' Webinar - https://www.youtube.com/watch?v=_rUH-sEs68Y
+//Matthew Cranford's Tutorial - https://matthewcranford.com/category/blog-posts/walkthrough/memory-game/
+
 //stores all the cards in an array
 let cards = ['fa-diamond', 'fa-diamond',
             'fa-paper-plane-o', 'fa-paper-plane-o',
