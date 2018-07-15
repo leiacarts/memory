@@ -1,7 +1,4 @@
-/*
- * Create a list that holds all of your cards
- */
-
+//stores all the cards in an array
 let cards = ['fa-diamond', 'fa-diamond',
             'fa-paper-plane-o', 'fa-paper-plane-o',
             'fa-anchor', 'fa-anchor',
@@ -10,21 +7,13 @@ let cards = ['fa-diamond', 'fa-diamond',
             'fa-leaf', 'fa-leaf',
             'fa-bicycle', 'fa-bicycle',
             'fa-bomb', 'fa-bomb'];
-            //stores all the cards in an array
 
-function generateCard(card) { //gives HTML for each card
+//gives HTML for each card
+function generateCard(card) {
     return `<li class="card" data-card="${card}"><i class="fa ${card}"></i></li>`;
 }
 
-
-/*
- * Display the cards on the page
- *   - shuffle the list of cards using the provided "shuffle" method below
- *   - loop through each card and create its HTML
- *   - add each card's HTML to the page
- */
-
-// Shuffle function from http://stackoverflow.com/a/2450976
+//shuffle function from http://stackoverflow.com/a/2450976
 function shuffle(array) {
     var currentIndex = array.length, temporaryValue, randomIndex;
 
@@ -39,21 +28,7 @@ function shuffle(array) {
     return array;
 }
 
-
-/*
- * set up the event listener for a card. If a card is clicked:
- *  - display the card's symbol (put this functionality in another function that you call from this one)
- *  - add the card to a *list* of "open" cards (put this functionality in another function that you call from this one)
- *  - if the list already has another card, check to see if the two cards match
- *    + if the cards do match, lock the cards in the open position (put this functionality in another function that you call from this one)
- *    + if the cards do not match, remove the cards from the list and hide the card's symbol (put this functionality in another function that you call from this one)
- *    + increment the move counter and display it on the page (put this functionality in another function that you call from this one)
- *    + if all cards have matched, display a message with the final score (put this functionality in another function that you call from this one)
- */
-
-
-
-
+//sets up game board
 function initGame() {
   const deck = document.querySelector('.deck'); //calls deck ul
     let cardHTML = shuffle(cards).map(function(card) { //map calls all the cards and translates into the function
@@ -62,7 +37,8 @@ function initGame() {
     deck.innerHTML  = cardHTML.join(''); //turns the strings into HTML
 }
 
-function addMove() { //maintains count of moves
+//maintains count of moves
+function addMove() {
   moves++;
   const movesTest = document.querySelector('.moves');
     if (moves === 1) { //correct formatting
@@ -72,12 +48,14 @@ function addMove() { //maintains count of moves
     }
 }
 
-function starScore() { //when to remove a star
+//when to remove a star
+function starScore() {
   if (moves === 16 || moves === 24) {
     demote();
   }
 }
 
+//'removes' a star
 function demote() {
   const starList = document.querySelectorAll('.stars li');
   for (star of starList) {
@@ -88,6 +66,7 @@ function demote() {
   }
 }
 
+//counts number stars
 function getStars() {
   stars = document.querySelectorAll('.stars li');
   starCount = 0;
@@ -99,7 +78,8 @@ function getStars() {
   return starCount;
 }
 
-function startClock() { //starts timer
+//starts timer
+function startClock() {
     clockId = setInterval(() => {
     time++; //increases the time by one second
     displayTime();
@@ -107,6 +87,7 @@ function startClock() { //starts timer
   }, 1000);
 }
 
+//shows time
 function displayTime() {
   let clock = document.querySelector('.clock');
   let minutes = Math.floor(time / 60); //because timer is calculating seconds this gets it in minutes
@@ -119,20 +100,25 @@ function displayTime() {
   }
 }
 
+//stops timer
 function stopClock() {
   clearInterval(clockId);
 }
 
+//ends game and triggers modal
 function gameOver() {
   stopClock();
+  writeModalStats();
   displayModal();
 }
 
+//displays modal
 function displayModal() {
   let modal = document.querySelector('.modalBackground');
   modal.classList.toggle('hide');
 }
 
+//lists stats in modal
 function writeModalStats() {
   let timeStat = document.querySelector('.modalTime');
   let clockTime = document.querySelector('.clock').innerHTML;
@@ -145,33 +131,59 @@ function writeModalStats() {
   movesStat.innerHTML = `Moves: ${moves}`;
 }
 
+//cancel button on modal
 document.querySelector('.modalCancel').addEventListener('click', () => {
   displayModal();
 });
 
-document.querySelector('.modalReplay').addEventListener('click', () => {
-  console.log('replay');
-});
+//replay button on modal
+document.querySelector('.modalReplay').addEventListener('click', replay);
+
+//restart button on game
+document.querySelector('.restart').addEventListener('click', reset);
+
+//resets game
+function reset() {
+  stopClock();
+  clockOff = true;
+  time = 0;
+  displayTime();
+
+  moves = 0;
+  document.querySelector('.moves').innerHTML = "moves";
+
+  stars = 0;
+  const starList = document.querySelectorAll('.stars li');
+  for (star of starList) {
+    star.style.display = 'inline';
+  }
+}
+
+//replay from modal button
+function replay() {
+  reset();
+  displayModal();
+
+  const cards = document.querySelectorAll('.deck li');
+  for (let card of cards) {
+    card.className = 'card';
+  }
+}
 
 
-//SETS GAME BOARD
+
+
+//starts game
 initGame();
 
+//global variables
 let allCards = document.querySelectorAll('.card'); //selects all in the card class from html
-openCards = []; //open array to keep track of open cards
+let openCards = []; //open array to keep track of open cards
 let moves = 0;
 let time = 0;
 let clockOff = true;
 let clockId;
-
-//modal testing
-time = 121;
-displayTime();
-moves = 16;
-starScore();
-writeModalStats();
-displayModal();
-
+let matched = 0;
 
 displayTime();
 
@@ -192,10 +204,10 @@ if (openCards.length === 2) { //limits flipped cards per turn to two
   addMove();
   starScore();
 
-//CARDS MATCH
+//if cards match
 if (openCards[0].dataset.card === openCards[1].dataset.card) {
 
-let pairs = (cards / 2);
+    const pairs = 8;
 
     openCards[0].classList.add('match');
     openCards[0].classList.add('open');
@@ -206,12 +218,14 @@ let pairs = (cards / 2);
     openCards[1].classList.add('show');
 
     openCards = [];
+    matched++;
 
-          if ([(card.classList.contains('match') / 2)] === pairs) {
-            gameOver();
-          }
+            if (matched === pairs) {
+                gameOver();
+            }
+
 } else {
-  //CARDS DON'T MATCH
+  //if cards don't match
     setTimeout(function() {
           openCards.forEach(function(card) { //times out shown cards
           card.classList.remove('open', 'show');
