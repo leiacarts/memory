@@ -56,20 +56,19 @@ function shuffle(array) {
 
 function initGame() {
   const deck = document.querySelector('.deck'); //calls deck ul
-  let cardHTML = shuffle(cards).map(function(card) { //map calls all the cards and translates into the function
-  return generateCard(card); //creates array of strings
-});
-
-deck.innerHTML  = cardHTML.join(''); //turns the strings into HTML
+    let cardHTML = shuffle(cards).map(function(card) { //map calls all the cards and translates into the function
+        return generateCard(card); //creates array of strings
+        });
+    deck.innerHTML  = cardHTML.join(''); //turns the strings into HTML
 }
 
 function addMove() { //maintains count of moves
   moves++;
   const movesTest = document.querySelector('.moves');
-    if (moves === 1) {
-      movesTest.innerHTML = moves + " Move";
+    if (moves === 1) { //correct formatting
+      movesTest.innerHTML = moves + "&nbsp;&nbsp;Move";
     } else {
-      movesTest.innerHTML = moves + " Moves"
+      movesTest.innerHTML = moves + "&nbsp;&nbsp;Moves"
     }
 }
 
@@ -89,30 +88,71 @@ function demote() {
   }
 }
 
-//sets game board
+function startClock() { //starts timer
+  let clockId = setInterval(() => {
+    time++; //increases the time by one second
+    console.log(time);
+    displayTime();
+  }, 1000);
+}
+
+function displayTime() {
+  let clock = document.querySelector('.clock');
+  let minutes = Math.floor(time / 60); //because timer is calculating seconds this gets it in minutes
+  let seconds = time % 60; //the remainder from minutes are the seconds
+
+  if (seconds < 10) { //correct formatting
+    clock.innerHTML = `${minutes}:0${seconds}`;
+  } else {
+    clock.innerHTML = `${minutes}:${seconds}`;
+  }
+}
+
+function stopClock() {
+  clearInterval(clockId);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//SETS GAME BOARD
 initGame();
-
-
 
 let allCards = document.querySelectorAll('.card'); //selects all in the card class from html
 openCards = []; //open array to keep track of open cards
 let moves = 0;
+let time = 0;
+let clockOff = true;
 
+displayTime();
 
 allCards.forEach(function(card) { //applies to all cards
      card.addEventListener('click', function(e) {
 
   if (!card.classList.contains('open') && !card.classList.contains('show') && !card.classList.contains('match')) {    //prevents flipped card from passing to array
+
+    if (clockOff) { //starts game timer
+        startClock();
+        clockOff = false;
+    }
+
          openCards.push(card); //pushes clicked card element to array
          card.classList.add('open', 'show'); //shows card
-            // console.log('Open Cards:', openCards.length); //shows # open
-
-// let firstCardType = openCards[0].dataset.card;
-
 
 if (openCards.length === 2) { //limits flipped cards per turn to two
   addMove();
   stars();
+
 //CARDS MATCH
 if (openCards[0].dataset.card === openCards[1].dataset.card) {
 
