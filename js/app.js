@@ -28,13 +28,24 @@ function shuffle(array) {
     return array;
 }
 
+const deck = document.querySelector('.deck'); //calls deck ul
+
+
 //sets up game board
 function initGame() {
-  const deck = document.querySelector('.deck'); //calls deck ul
+  // const deck = document.querySelector('.deck'); //calls deck ul
     let cardHTML = shuffle(cards).map(function(card) { //map calls all the cards and translates into the function
         return generateCard(card); //creates array of strings
         });
     deck.innerHTML  = cardHTML.join(''); //turns the strings into HTML
+}
+
+function shuffleDeck() {
+  const preShuffle = Array.from(document.querySelectorAll('.deck li'));
+  const shuffledCards = shuffle(preShuffle);
+  for (card of shuffledCards) {
+      deck.appendChild(card);
+  }
 }
 
 //maintains count of moves
@@ -150,24 +161,26 @@ function reset() {
   displayTime();
 
   moves = 0;
-  document.querySelector('.moves').innerHTML = "moves";
+  document.querySelector('.moves').innerHTML = "0 &nbsp;&nbsp;Moves";
 
   stars = 0;
   const starList = document.querySelectorAll('.stars li');
   for (star of starList) {
     star.style.display = 'inline';
   }
+
+  const cards = document.querySelectorAll('.deck li');
+  for (let card of cards) {
+    card.className = 'card';
+  }
+
+  shuffleDeck();
 }
 
 //replay from modal button
 function replay() {
   reset();
   displayModal();
-
-  const cards = document.querySelectorAll('.deck li');
-  for (let card of cards) {
-    card.className = 'card';
-  }
 }
 
 
@@ -188,9 +201,9 @@ let matched = 0;
 displayTime();
 
 allCards.forEach(function(card) { //applies to all cards
-     card.addEventListener('click', function(e) {
+card.addEventListener('click', function(e) {
 
-  if (!card.classList.contains('open') && !card.classList.contains('show') && !card.classList.contains('match')) {    //prevents flipped card from passing to array
+  if (!card.classList.contains('open') && !card.classList.contains('show') && !card.classList.contains('match') && openCards.length < 2) {    //prevents flipped card from passing to array
 
     if (clockOff) { //starts game timer
         startClock();
@@ -207,7 +220,7 @@ if (openCards.length === 2) { //limits flipped cards per turn to two
 //if cards match
 if (openCards[0].dataset.card === openCards[1].dataset.card) {
 
-    const pairs = 8;
+    const pairs = cards.length / 2;
 
     openCards[0].classList.add('match');
     openCards[0].classList.add('open');
