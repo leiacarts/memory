@@ -7,7 +7,7 @@ A memory game based on concentration for part two of Udacity's Front-End Web Dev
 * [Installation](#installation)
 * [Gameplay](#gameplay)
 * [Features](#features)
-* [Built With](#built with)
+* [Built With](#built-with)
 * [Acknowledgements](#acknowledgements)
 
 ## Installation
