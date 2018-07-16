@@ -1,20 +1,37 @@
 # Memory Game Project
 
+A memory game based on concentration for part two of Udacity's Front-End Web Developer Nanodegree.
+
 ## Table of Contents
 
-* [Instructions](#instructions)
-* [Contributing](#contributing)
+* [Installation](#installation)
+* [Gameplay](#gameplay)
+* [Features](#features)
+* [Built With](#built with)
+* [Acknowledgements](#acknowledgements)
 
-## Instructions
+## Installation
 
-The starter project has some HTML and CSS styling to display a static version of the Memory Game project. You'll need to convert this project from a static project to an interactive one. This will require modifying the HTML and CSS files, but primarily the JavaScript file.
+Download and open index.html with a browser.
 
-To get started, open `js/app.js` and start building out the app's functionality
+## Gameplay
 
-For specific, detailed instructions, look at the project instructions in the [Udacity Classroom](https://classroom.udacity.com/me).
+Click on two cards per move to see their faces. Try to remember where each card is on the game board in order to match them into pairs. When all cards are matched, player can choose to replay the game with a shuffled deck.
 
-## Contributing
+## Features
 
-This repository is the starter code for _all_ Udacity students. Therefore, we most likely will not accept pull requests.
+* Timer
+* Restart option
+* Modal with cancel and replay options
+* Star rating system
 
-For details, check out [CONTRIBUTING.md](CONTRIBUTING.md).
+## Built With
+
+* HTML
+* CSS
+* Javascript
+
+## Acknowledgements
+
+* [Mike Wales' webinar](https://www.youtube.com/watch?v=_rUH-sEs68Y)
+* [Matthew Cranford's walkthrough](https://matthewcranford.com/category/blog-posts/walkthrough/memory-game/)
