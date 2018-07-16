@@ -98,7 +98,6 @@ function startClock() {
     clockId = setInterval(() => {
     time++; //increases the time by one second
     displayTime();
-    console.log(time);
   }, 1000);
 }
 
@@ -165,6 +164,7 @@ function reset() {
   displayTime();
 
   moves = 0;
+  openCards = [];
   document.querySelector('.moves').innerHTML = "0 &nbsp;&nbsp;Moves";
 
   stars = 0;
