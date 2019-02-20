@@ -18,16 +18,16 @@ MEMORY is an interactive game that times how long it takes users to match pairs 
 
 To use jQuery and utilize event listeners to allow users to flip, match, and shuffle cards.
 
-## Installation
-
-Download project repo. Open index.html in a browser. Click on two cards per move to see their faces. Try to remember where each card is on the game board in order to match them into pairs. When all cards are matched, player can choose to replay the game with a shuffled deck.
-
 ## Features
 
 * Timer
 * Restart option
 * Modal with cancel and replay options
 * Star rating system
+
+## Installation
+
+Download project repo. Open index.html in a browser. Click on two cards per move to see their faces. Try to remember where each card is on the game board in order to match them into pairs. When all cards are matched, player can choose to replay the game with a shuffled deck.
 
 ## Built With
 
@@ -40,7 +40,6 @@ Download project repo. Open index.html in a browser. Click on two cards per move
 
 * [Mike Wales' webinar](https://www.youtube.com/watch?v=_rUH-sEs68Y)
 * [Matthew Cranford's walkthrough](https://matthewcranford.com/category/blog-posts/walkthrough/memory-game/)
-
 
 ## Screenshots
 
